@@ -1,16 +1,5 @@
 local M = {}
 
-local suffix_h = {
-	'.h',
-	'.hpp'
-}
-
-local suffix_c = {
-	'.c',
-	'.cpp',
-	'.cxx'
-}
-
 local file_exists = function(filename)
 	local file = io.open(filename,"r")
 	if file ~= nil then
@@ -44,18 +33,19 @@ local get_filepath_with_new_suffix = function(no_suffix_filename, suffix_arr)
     return nil
 end
 
-M.cpp_find_corresponding_file = function(filepath)
-    local is_header, h_ext = file_has_suffix(filepath, suffix_h)
-    local is_cpp, c_ext = file_has_suffix(filepath, suffix_c)
+local find_corresponding_file = function(filepath, suffix_a, suffix_b)
+	local is_type_a, a_ext = file_has_suffix(filepath, suffix_a)
+    local is_type_b, b_ext = file_has_suffix(filepath, suffix_b)
 
     local no_suffix_filename = nil
     local suffix_arr = nil
-    if is_header then
-        suffix_arr = suffix_c
-        no_suffix_filename = filepath:gsub('%'..h_ext, '')
-    elseif is_cpp then
-        suffix_arr = suffix_h
-        no_suffix_filename = filepath:gsub('%'..c_ext, '')
+
+    if is_type_a then
+        suffix_arr = suffix_b
+        no_suffix_filename = filepath:gsub('%'..a_ext, '')
+    elseif is_type_b then
+        suffix_arr = suffix_a
+        no_suffix_filename = filepath:gsub('%'..b_ext, '')
     end
 
     if no_suffix_filename == nil or suffix_arr == nil then
@@ -69,6 +59,20 @@ M.cpp_find_corresponding_file = function(filepath)
     end
     
 	return 'Could not find corresponding file', nil
+end
+
+M.cpp_find_corresponding_file = function(filepath)
+	local suffix_h = {
+		'.h',
+		'.hpp'
+	}
+	
+	local suffix_c = {
+		'.c',
+		'.cpp',
+		'.cxx'
+	}
+	return find_corresponding_file(filepath, suffix_h, suffix_c)
 end
 
 return M
