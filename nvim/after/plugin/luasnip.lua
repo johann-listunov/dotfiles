@@ -41,6 +41,22 @@ ls.config.set_config({
 
 ls.setup({
 	snip_env = {
+		show = function(args)
+			return args[1][1]
+		end,
+		current_filename_with_ext = function()
+			return vim.fn.expand('%:t')
+		end,
+		current_filename_with_no_ext = function()
+			local filename = vim.fn.expand('%:t')
+			local first_dot_idx = string.find(filename, '.', 1, true)
+			if first_dot_idx == nil then
+				return 'NO_DOT_FOUND_IN_FILENAME'
+			elseif first_dot_idx == 1 then
+				return 'FILE_HAS_NO_NAME_ONLY_EXTENSION'
+			end 
+			return string.sub(filename, 1, first_dot_idx - 1)
+		end,
 		s = function(...)
 			return ls.snippet(...)
 		end,
@@ -52,6 +68,9 @@ ls.setup({
 		end,
 		i = function(...)
 			return ls.insert_node(...)
+		end,
+		c = function(...)
+			return ls.choice_node(...)
 		end,
 	},
 })
