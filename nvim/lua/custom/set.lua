@@ -1,3 +1,10 @@
+vim.g.loaded_netwr = 1
+vim.g.loaded_netwrPlugin = 1
+
+vim.g.mapleader = ' '
+
+vim.opt.termguicolors = true
+
 vim.opt.guicursor = ''
 
 vim.opt.nu = true
@@ -13,5 +20,3 @@ vim.opt.incsearch = true
 vim.opt.smartindent = true
 
 vim.opt.wrap = false
-
-vim.g.mapleader = ' '

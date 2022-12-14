@@ -33,6 +33,12 @@ return require('packer').startup(function(use)
     use 'hrsh7th/cmp-buffer'
     use 'hrsh7th/nvim-cmp'
 
+    use('nvim-tree/nvim-tree.lua', {
+        requires = {
+            'nvim-tree/nvim-web-devicons',
+        }
+    })
+
     if packer_bootstrap then
         require('packer').sync()
     end
